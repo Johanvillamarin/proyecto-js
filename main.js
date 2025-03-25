@@ -15,7 +15,6 @@ const products = [
   { name: 'HP Pavilion x360', price: 849, stars: 4.3, reviews: 75, seller: 'PcComponentes', image: 'https://i.pinimg.com/736x/05/61/1c/05611c2b603f67419838e932710d87cf.jpg' }
 ];
 
-// Crear tarjetas de productos
 const productContainer = document.getElementById('product-container');
 
 function createProductCard(product) {
@@ -35,15 +34,24 @@ products.forEach(product => {
   productContainer.appendChild(createProductCard(product));
 });
 
-// Toggle para los filtros
-const menuButton = document.getElementById('menu-button');
-const filtersSection = document.getElementById('filters-section');
+const menuToggle = document.getElementById('menu-toggle');
+const navMenu = document.querySelector('.nav-menu');
 
-menuButton.addEventListener('click', () => {
-  filtersSection.classList.toggle('hidden');
+menuToggle.addEventListener('click', () => {
+  navMenu.classList.toggle('active');
 });
 
-// Filtro por precio
+const filtersSection = document.getElementById('filters-section');
+const navLinks = document.querySelectorAll('.nav-link');
+
+navLinks.forEach(link => {
+  link.addEventListener('click', (e) => {
+    if (e.target.textContent === 'Productos') {
+      filtersSection.classList.toggle('hidden');
+    }
+  });
+});
+
 const priceRange = document.getElementById('price-range');
 const priceValue = document.getElementById('price-value');
 
@@ -52,14 +60,13 @@ priceRange.addEventListener('input', () => {
   filterProducts();
 });
 
-// Filtro por marca y precio
 const brandFilter = document.getElementById('brand');
 
 function filterProducts() {
   const maxPrice = parseInt(priceRange.value);
   const selectedBrand = brandFilter.value;
 
-  productContainer.innerHTML = ''; // Limpiar productos
+  productContainer.innerHTML = ''; 
 
   const filteredProducts = products.filter(product => {
     const withinPrice = product.price <= maxPrice;
@@ -74,7 +81,6 @@ function filterProducts() {
 
 brandFilter.addEventListener('change', filterProducts);
 
-// Checkbox de privacidad
 const privacyCheckbox = document.getElementById('privacyCheckbox');
 privacyCheckbox.addEventListener('change', () => {
   console.log(privacyCheckbox.checked ? "Política aceptada" : "Política no aceptada");
